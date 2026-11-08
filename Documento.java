@@ -27,7 +27,17 @@ public class Documento {
     }
     public Documento(String nomeDocumento,String descricao,int diaEntrega,int mesEntrega,int anoEntrega) {
 
+        if (nomeDocumento == null || nomeDocumento.isBlank()) {
+
+            throw new IllegalArgumentException("ERRO.Nome do documento está vazio ou inválido");
+
+        }
         this.nomeDocumento = nomeDocumento;
+        if (descricao == null || descricao.isBlank()) {
+
+            throw new IllegalArgumentException("Erro,descrição inválida");
+
+        }
         this.descricao = descricao;
         this.dataEntrega = LocalDate.of(anoEntrega, mesEntrega, diaEntrega);
         this.statusDocumento = StatusDocumento.NAO_REGISTRADO;
@@ -47,6 +57,12 @@ public class Documento {
     }
     public void setNomeDocumento(String nomeDocumento) {
 
+        if (nomeDocumento == null || nomeDocumento.isBlank()) {
+
+            throw new IllegalArgumentException("Erro, nome do documento inválido");
+
+        }
+
         this.nomeDocumento = nomeDocumento;
 
     }
@@ -56,6 +72,12 @@ public class Documento {
 
     }
     public void setDescricaoDocumento(String descricao) {
+
+        if (descricao == null || descricao.isBlank()) {
+
+            throw new IllegalArgumentException("Erro, descrição vazia");
+
+        }
 
         this.descricao = descricao;
 
@@ -80,11 +102,11 @@ public class Documento {
 
         }
         
-        this.dataEntrega = LocalDate.of(ano,mes,dia);
+        this.dataEntrega = novaData;
 
     }
     public StatusDocumento getStatusDocumento() {
-
+        
         return this.statusDocumento;
 
     }
@@ -119,10 +141,17 @@ public class Documento {
         return "Documento não obrigatório";
     }
 
-    public void documentoRejeitado() {
+    public void documentoRejeitado(String justificativa) {
 
-        this.statusDocumento = StatusDocumento.REJEITADO;
+        if (justificativa == null || justificativa.isBlank()){
+
+            throw new IllegalArgumentException ("Justificativa de rejeição é obrigatória");
+
+        }
         
+        this.statusDocumento = StatusDocumento.REJEITADO;
+        this.justificativaRejeicao = justificativa;
+
     }
     public void documentoAceito() {
 
@@ -144,11 +173,15 @@ public class Documento {
 
         if (justificativaRejeicao == null || justificativaRejeicao.isBlank()) {
 
-            throw new IllegalArgumentException("Justificativa não explicitada de forma correta");
+                throw new IllegalArgumentException("Justificativa não explicitada de forma correta");
 
         }
 
-        this.justificativaRejeicao = justificativaRejeicao;
+
+        if (this.statusDocumento == StatusDocumento.REJEITADO) {
+            
+            this.justificativaRejeicao = justificativaRejeicao;
+    }
 
     }
     public String getJustificativaRejeicao() {
