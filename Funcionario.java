@@ -167,9 +167,11 @@ public class Funcionario extends Pessoa {
         this.statusFuncionario = status;
 
     }
-    public Period calcularTempoServido() {
+    public String calcularTempoServido() {
 
-        return Period.between(dataContratacao, LocalDate.now());
+        Period tempo = Period.between(dataContratacao, LocalDate.now());
+
+        return "%d anos, %d meses e %d dias".formatted(tempo.getYears(),tempo.getMonths(),tempo.getDays());
 
     }
     @Override 
